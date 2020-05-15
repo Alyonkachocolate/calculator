@@ -113,8 +113,6 @@ std::queue<std::variant<double, operations>> read_expression() {
         if (c == '(')
           Stack.push(bkt_left);
         else {
-          if (!Stack.empty())
-            throw std::out_of_range("(Extra brackets)");
           while (Stack.top() != bkt_left) {
             values.push(Stack.top());
             Stack.pop();
@@ -135,8 +133,6 @@ std::queue<std::variant<double, operations>> read_expression() {
       Stack.pop(); // если осталась лишняя '(' скобочка
     if (!Stack.empty()) // копируем всё в основной стек
       while (!Stack.empty()) {
-        if (Stack.top() == bkt_left || Stack.top() == bkt_right)
-          throw std::out_of_range("(Extra brackets)");
         values.push(Stack.top());
         Stack.pop();
       }
