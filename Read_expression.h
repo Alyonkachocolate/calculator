@@ -42,6 +42,7 @@ std::queue<std::variant<double, operations>> read_expression() {
   double x = 0; /// переменная, которая может запрашиваться у пользователя
   bool for_x = false; /// проверяет, знаем ли мы значение x
   while (c != EOF) {
+
     /// считывание цифр и бросание их на основной стек
     if (isnumber(c) || c == '.') {
       std::string s;
@@ -123,7 +124,7 @@ std::queue<std::variant<double, operations>> read_expression() {
               values.push(Stack.top());
               Stack.pop();
             }
-            if (!Stack.empty()) if (Stack.top() == bkt_left) Stack.pop();
+            //if (!Stack.empty()) if (Stack.top() == bkt_left) Stack.pop();
           }
         }
         c = date_stream.get();
