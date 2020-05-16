@@ -109,15 +109,16 @@ std::queue<std::variant<double, operations>> read_expression() {
 
         /// работа с скобочками. в случае '(' (bkt_left) - кидаем на стек
         /// операций, если же это ')' (bkt_right) - кидаем на основной стек
-        /// все операции в вырвжение, которое закрывет эта скобка
+        /// все операции в выражении, которое закрывет эта скобка
         if (c == '(')
           Stack.push(bkt_left);
         else {
-          while (Stack.top() != bkt_left) {
-            values.push(Stack.top());
-            Stack.pop();
+          if (!Stack.empty()) {
+            while (Stack.top() != bkt_left && !Stack.empty()) {
+              values.push(Stack.top());
+              Stack.pop();
+            }
           }
-          Stack.pop();
         }
         unary_minus = true;
         c = date_stream.get();
@@ -133,7 +134,9 @@ std::queue<std::variant<double, operations>> read_expression() {
       Stack.pop(); // если осталась лишняя '(' скобочка
     if (!Stack.empty()) // копируем всё в основной стек
       while (!Stack.empty()) {
-        values.push(Stack.top());
+        if (Stack.top() != bkt_left && Stack.top() != bkt_right) {
+          values.push(Stack.top());
+        }
         Stack.pop();
       }
   }

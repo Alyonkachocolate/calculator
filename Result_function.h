@@ -22,6 +22,8 @@ double result(std::queue<std::variant<double, operations>> &values) {
       if (!is_unary_operation(std::get<operations>(values.front()))) { // если
         // это
         // бинарная операция
+        if (result.size()<2)
+          throw std::out_of_range("");
         double value2 = result.top();
         result.pop();
         double value1 = result.top();
@@ -29,6 +31,8 @@ double result(std::queue<std::variant<double, operations>> &values) {
         BinaryBlock block(value1, value2, std::get<operations>(values.front()));
         result.push(block.Answer());
       } else { // если это унарная операция
+        if (result.empty())
+          throw std::out_of_range("");
         double value1 = result.top();
         result.pop();
         UnaryBlock block(value1, std::get<operations>(values.front()));
