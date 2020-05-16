@@ -3,13 +3,13 @@
 
 enum operations {
   // Unary
-  UnaryMinus,
   Sin,
   Cos,
   tg,
   ctg,
   Exp,
   Sqrt,
+  UnaryMinus,
 
   // Binary
   Degree,

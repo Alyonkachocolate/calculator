@@ -83,11 +83,15 @@ std::queue<std::variant<double, operations>> read_expression() {
             values.push(x);
           }
         } else {
-          if (s1 == "pi")
+          if (s1 == "pi"){
             values.push(M_PI);
+            unary_minus = false;
+          }
           else {
-            if (s1 == "e")
+            if (s1 == "e"){
               values.push(M_E);
+              unary_minus = false;
+            }
             else {
               operations o = operand.at(s1); // текущая операция
               if (s1 == "-" && unary_minus)
@@ -102,6 +106,7 @@ std::queue<std::variant<double, operations>> read_expression() {
               Stack.push(o);
             }
           }
+          unary_minus = true;
         }
         if (c == ' ')
           c = date_stream.get();
@@ -118,15 +123,16 @@ std::queue<std::variant<double, operations>> read_expression() {
               values.push(Stack.top());
               Stack.pop();
             }
+            if (!Stack.empty()) if (Stack.top() == bkt_left) Stack.pop();
           }
         }
-        unary_minus = true;
         c = date_stream.get();
         if (c == ' ')
           c = date_stream.get();
       }
     }
   }
+  // 2*(4-2*sqrt(20.9)-3.5/90)
 
   /// все оставшиеся операции из стека операций кидаем на основной стек
   if (!Stack.empty()) {
@@ -142,5 +148,4 @@ std::queue<std::variant<double, operations>> read_expression() {
   }
   return values;
 }
-
 #endif // CALCULATOR_READ_EXPRESSION_H
