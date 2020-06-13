@@ -16,28 +16,23 @@ public:
       : value1_(v1), value2_(v2), operation(o) {
 
     if (operation == Sum) {
-      class Sum block(value1_, value2_);
-      answer_ = block.Answer();
+      answer_ = value1_ + value2_;
     }
 
     if (operation == Subtraction) {
-      class Subtraction block(value1_, value2_);
-      answer_ = block.Answer();
+      answer_ = value1_ - value2_;
     }
 
     if (operation == Multiplication) {
-      class Multiplication block(value1_, value2_);
-      answer_ = block.Answer();
+      answer_ = value1_ * value2_;
     }
 
     if (operation == Division) {
-      class Division block(value1_, value2_);
-      answer_ = block.Answer();
+      answer_ = value1_ / value2_;
     }
 
     if (operation == Degree) {
-      class Degree block(value1_, value2_);
-      answer_ = block.Answer();
+      answer_ = pow(value1_, value2_);
     }
   }
   [[nodiscard]] double Answer() const { return answer_; }

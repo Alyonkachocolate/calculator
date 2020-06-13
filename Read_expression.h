@@ -22,7 +22,7 @@ std::queue<std::variant<double, operations>> read_expression() {
   /// считываем всю строку выражения и бросаем её в поток строк
 
   std::cout << "Please use keywords "
-               "such as: sin, cos, tg, ctg, exp, sqrt, and ^ for "
+               "such as: sin, cos, tg, ctg, exp, sqrt\nand ^ for "
                "degree. Also you can use const pi = 3.1415926 and e = 2"
                ".7182818."
             << std::endl;
@@ -124,7 +124,7 @@ std::queue<std::variant<double, operations>> read_expression() {
               values.push(Stack.top());
               Stack.pop();
             }
-            //if (!Stack.empty()) if (Stack.top() == bkt_left) Stack.pop();
+            if (!Stack.empty()) if (Stack.top() == bkt_left) Stack.pop();
           }
         }
         c = date_stream.get();
