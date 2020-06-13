@@ -1,7 +1,6 @@
 #ifndef CALCULATOR_BINARYBLOCK_H
 #define CALCULATOR_BINARYBLOCK_H
 
-#include "BinaryOperation.h"
 #include "UnaryBlock.h"
 
 class BinaryBlock {

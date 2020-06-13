@@ -7,6 +7,7 @@
 #include <sstream>
 #include <stack>
 #include <variant>
+#include <iostream>
 #include "BinaryBlock.h"
 #include "UnaryBlock.h"
 

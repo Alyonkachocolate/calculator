@@ -2,7 +2,6 @@
 #define CALCULATOR_UNARYBLOCK_H
 
 #include "Enum_operations.h"
-#include "UnaryOperation.h"
 
 class UnaryBlock {
 private:
