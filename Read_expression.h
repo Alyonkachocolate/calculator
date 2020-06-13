@@ -86,6 +86,7 @@ std::queue<std::variant<double, operations>> read_expression() {
             // вот здесь может выкинуться исключение std::invalid_argument
             values.push(x);
           }
+          unary_minus = false;
         } else {
           if (s1 == "pi"){
             values.push(M_PI);
@@ -99,9 +100,9 @@ std::queue<std::variant<double, operations>> read_expression() {
             else {
               operations o = operand.at(s1); // текущая операция
               if (s1 == "-" && unary_minus)
-                o = UnaryMinus;
+                  o = UnaryMinus;
               if (!Stack.empty()) {
-                while ((!Stack.empty() && Stack.top() <= o) &&
+                while ((!Stack.empty() && (Stack.top()%10) <= (o%10)) &&
                        Stack.top() != bkt_left) {
                   values.push(Stack.top());
                   Stack.pop();
