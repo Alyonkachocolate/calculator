@@ -7,12 +7,15 @@
 #include <sstream>
 #include <stack>
 #include <variant>
+#include <iostream>
+#include "BinaryBlock.h"
+#include "UnaryBlock.h"
 
 std::queue<std::variant<double, operations>> read_expression() {
   std::map<std::string, operations> operand = {
       {"+", Sum},      {"-", Subtraction}, {"*", Multiplication}, {"^", Degree},
       {"/", Division}, {"sin", Sin},       {"cos", Cos},          {"tg", tg},
-      {"ctg", ctg},    {"exp", Exp},       {"sqrt", Sqrt},
+      {"ctg", ctg},    {"Exp", Exp},       {"sqrt", Sqrt},
   };
   std::queue<std::variant<double, operations>> values; // стек для основной
   // работы - содержит в себе шаьлон для реализации двух типов - вещественных
