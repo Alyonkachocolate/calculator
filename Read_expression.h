@@ -7,7 +7,6 @@
 #include <sstream>
 #include <stack>
 #include <variant>
-#include <iostream>
 #include "BinaryBlock.h"
 #include "UnaryBlock.h"
 
@@ -57,43 +56,46 @@ std::queue<std::variant<double, operations>> read_expression() {
       values.push(a);
       if (c == ' ')
         c = date_stream.get();
-    } else if (c != '(' && c != ')') {
+    } else {
 
       /// работа по считыванию операций и бросание их на особый стек операций
       /// и, если нужно, перебрасывание на основной стек
-      
-      std::string s1;
-      bool ok = true; //проверка, что уже прочитанное не является
-      // каким-либо оператором, для случае по пример -sin(x)
-      do {
-        (s1 += (char)c);
-        if (operand.count(s1) > 0 || s1 == "pi" || s1 == "e" || s1 == "x")
-          ok = false;
-      } while (!isnumber(c = date_stream.get()) && c != ')' && c != '(' &&
+      if (c != '(' && c != ')') {
+        std::string s1;
+        bool ok = true; //проверка, что уже прочитанное не является
+        // каким-либо оператором, для случае по пример -sin(x)
+        do {
+          (s1 += (char)c);
+          if (operand.count(s1) > 0 || s1 == "pi" || s1 == "e" || s1 == "x")
+            ok = false;
+        } while (!isnumber(c = date_stream.get()) && c != ')' && c != '(' &&
                  c != EOF && ok);
-      
-      if (s1 != "pi" && s1 != "e" && s1 != "x" && operand.count(s1) == 0)
+        if (s1 != "pi" && s1 != "e" && s1 != "x" && operand.count(s1) == 0)
           throw std::out_of_range("It is: " + s1);
-      
-      if (s1 == "x") {
-        if (for_x)
-          values.push(x);
-        else {
-          for_x = true;
-          std::cout << "Please enter the value of the variable x: "
-                    << std::endl;
-          std::string com;
-          getline(std::cin, com);
-          x = std::stod(com);
-          // вот здесь может выкинуться исключение std::invalid_argument
-          values.push(x);
-      } else if (s1 == "pi"){  
-          values.push(M_PI);
-          unary_minus = false;
-      } else if (s1 == "e"){
-          values.push(M_E);
-          unary_minus = false;
-      } else {
+        if (s1 == "x") {
+          if (for_x)
+            values.push(x);
+          else {
+            for_x = true;
+            std::cout << "Please enter the value of the variable x: "
+                      << std::endl;
+            std::string com;
+            getline(std::cin, com);
+            x = std::stod(com);
+            // вот здесь может выкинуться исключение std::invalid_argument
+            values.push(x);
+          }
+        } else {
+          if (s1 == "pi"){
+            values.push(M_PI);
+            unary_minus = false;
+          }
+          else {
+            if (s1 == "e"){
+              values.push(M_E);
+              unary_minus = false;
+            }
+            else {
               operations o = operand.at(s1); // текущая операция
               if (s1 == "-" && unary_minus)
                 o = UnaryMinus;
@@ -110,13 +112,15 @@ std::queue<std::variant<double, operations>> read_expression() {
           unary_minus = true;
         }
         if (c == ' ')
-          c = date_stream.get();   
+          c = date_stream.get();
+      } else {
+
         /// работа с скобочками. в случае '(' (bkt_left) - кидаем на стек
         /// операций, если же это ')' (bkt_right) - кидаем на основной стек
-        /// все операции в выражении, которое закрывет эта скобка  
-      } else if (c == '(') {
+        /// все операции в выражении, которое закрывет эта скобка
+        if (c == '(')
           Stack.push(bkt_left);
-      } else {             
+        else {
           if (!Stack.empty()) {
             while (Stack.top() != bkt_left && !Stack.empty()) {
               values.push(Stack.top());
@@ -137,8 +141,7 @@ std::queue<std::variant<double, operations>> read_expression() {
   if (!Stack.empty()) {
     if (Stack.top() == bkt_left)
       Stack.pop(); // если осталась лишняя '(' скобочка
-    // i can't just remove next line, let it be in comments
-    //if (!Stack.empty())
+    if (!Stack.empty()) // копируем всё в основной стек
       while (!Stack.empty()) {
         if (Stack.top() != bkt_left && Stack.top() != bkt_right) {
           values.push(Stack.top());
